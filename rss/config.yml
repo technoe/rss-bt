@@ -1,0 +1,8 @@
+---
+feeds:
+- url: https://revolutiontt.me/rss.php?feed=dl&bookmarks=on&passkey=103f1c1b02243e0ecc2057cbeb0e79c8
+    regex:
+      - '*1080p*'
+      - '*4k*'
+
+...

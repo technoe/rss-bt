@@ -1,0 +1,8 @@
+__pycache__/
+rss/__pycache__
+watch/
+.dockerignore
+bookmarks.xml
+gitinit.sh
+parseConfig.py
+test.yml
