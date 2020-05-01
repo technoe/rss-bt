@@ -14,4 +14,5 @@ data = yaml.load(config_file)
 
 for i in data['feeds']:
   url = i['feed']['url']
-  torrents.rss(url)
+  regex = i['feed']['regex']
+  torrents.rss(url, regex)
