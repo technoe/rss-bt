@@ -6,22 +6,21 @@ import logging
 import os
 import re
 
-def displaymatch(match):
-  if match is None:
-    return None
-  return '<Match: %r, groups=%r>' % (match.group(), match.groups())
+def tdown(title, tname, link):
+  message = "Downloading " + title + " to " + tname
+  logging.info(message)
 
-def download(link, torrent):
+  logging.info("requesting uri content")
   r = requests.get(link)
+
   logging.info("write content to file")
-  
-  with open(('/watch/' + torrent), 'wb') as f:
+  with open(('/watch/' + tname), 'wb') as f:
     f.write(r.content)
 
   done = "Torrents should be downloading now!"
   logging.info(done)
 
-def rss(url, regex):
+def rss(url, matches):
   logmsg = "We're pulling the bookmarks from " + url 
   logging.info(logmsg)
 
@@ -34,24 +33,31 @@ def rss(url, regex):
   logging.info("starting xml breakdown")
   for channel in root.findall('channel'):
     logging.info("find items")
-    for item in channel.findall('item'):
-      title = item[0].text
-      link = item[1].text
-      torrent = title + ".torrent"
-      if(regex):
-        for x in regex:
-          logging.info("starting regex match")
-          matched = False
-          for x in regex:
-            if(matched):
-              print('already matched once')
-            else:
-              matched = re.match(x, title)
-              if(matched):
-                print(matched.group)
-                download(link, torrent)
-                matched = True
-              # else:
-              #   print("no matches")
-      else:
-        download(link, torrent)
+    items = channel.findall('item')
+    count = len(items)
+    if count < 10:
+      print(items)
+
+    if count < 1:
+        message = "no bookmarks found"
+        logging.info(message)
+    else:
+      for item in items:
+        title = item.find('title').text
+        logging.info("set title: " + title)
+        link = item.find('link').text
+        logging.info("set link: " + link)
+        tname = title + ".torrent"
+        logging.info("set tname: " + tname)
+        
+        if matches:
+          for match in matches:
+            for i in match:
+              pattern = re.compile(i)
+              if pattern.search(title):
+                print("match found")
+                print("match title is: " + title)
+                tdown(title, tname, link)
+        elif not matches:
+          print(title, tname, link)
+          tdown(title, tname, link)

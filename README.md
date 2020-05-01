@@ -37,10 +37,14 @@ Config File Example
 ```yaml
 feeds:
   - feed:
-      url: https://...com
-      # regex: coming soon
+      url: https://favorite-torrent-rss-feed
+      matches:
+        - "(Bill.And.Teds.Excellent.Adventure.1989)"
+  
   - feed:
-      url: https://etc.etc.com/etc
+      url: https://some-other-rss-feed
+      matches:
+        - ".+" # everything!
 ```
 
 Details
