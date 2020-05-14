@@ -14,16 +14,18 @@ yaml = YAML(typ='safe')
 logging.info("set yaml type safe")
 data = yaml.load(config_file)
 logging.info("data created with yaml config")
-regex = []
+
 logging.info("set empty regex list")
 
 for i in data['feeds']:
+  regex = []
   logging.info("start loop")
 
   url = i['feed']['url']
   logging.info("url: " + url)
   
   if "matches" in i['feed']:
-    regex.append(i['feed']['matches'])
+    for m in i['feed']['matches']:
+      regex.append(m)
 
   torrents.rss(url,regex)
